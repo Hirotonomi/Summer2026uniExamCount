@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown to 15.06.2026</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        
+        :root {
+            --bg: #f8f7f4;
+            --text: #2c2c2c;
+            --accent: #5c5c5c;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 800px;
+            padding: 2rem;
+        }
+        
+        .title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            margin-bottom: 3rem;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 140px;
+        }
+        
+        .number {
+            font-size: 6.5rem;
+            font-weight: 700;
+            line-height: 1;
+            color: var(--text);
+            background: white;
+            padding: 1.2rem 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        
+        .label {
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+        
+        .separator {
+            font-size: 5rem;
+            font-weight: 300;
+            color: #d1d1d1;
+            align-self: center;
+            margin-top: -20px;
+        }
+        
+        .footer {
+            margin-top: 4rem;
+            font-size: 1rem;
+            color: #888;
+        }
+        
+        @media (max-width: 640px) {
+            .countdown {
+                gap: 1.2rem;
+            }
+            .number {
+                font-size: 4.2rem;
+                padding: 0.8rem 1rem;
+            }
+            .unit {
+                min-width: 90px;
+            }
+            .title {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Czas do 3 rano przed pierwszym egzaminem</div>
+        
+        <div class="countdown" id="countdown">
+            <div class="unit">
+                <div class="number" id="days">000</div>
+                <div class="label">Days</div>
+            </div>
+            <div class="separator">:</div>
+            <div class="unit">
+                <div class="number" id="hours">00</div>
+                <div class="label">Hours</div>
+            </div>
+            <div class="separator">:</div>
+            <div class="unit">
+                <div class="number" id="minutes">00</div>
+                <div class="label">Minutes</div>
+            </div>
+            <div class="separator">:</div>
+            <div class="unit">
+                <div class="number" id="seconds">00</div>
+                <div class="label">Seconds</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            Warsaw Time (CEST/CET) • Updated live
+        </div>
+    </div>
+
+    <script>
+        // Target: 15 June 2026, 03:00 Warsaw time (CEST in June → UTC+2)
+        const TARGET_DATE = new Date('2026-06-17T03:00:00+02:00');
+        
+        function updateCountdown() {
+            const now = new Date();
+            const diff = TARGET_DATE - now;
+            
+            if (diff <= 0) {
+                document.getElementById('days').textContent = "00";
+                document.getElementById('hours').textContent = "00";
+                document.getElementById('minutes').textContent = "00";
+                document.getElementById('seconds').textContent = "00";
+                return;
+            }
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            // Update DOM
+            document.getElementById('days').textContent = String(days).padStart(3, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }
+        
+        // Initial call + interval
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+        
+        // Optional: subtle background animation
+        document.body.style.transition = 'background 8s ease';
+    </script>
+</body>
+</html>
